@@ -22,10 +22,13 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float step = speed * Time.deltaTime;
-        transform.position = Vector2.MoveTowards(transform.position, target, step);
+        if (Spawncolours.stage2 == false)
+        {
+            float step = speed * Time.deltaTime;
+            transform.position = Vector2.MoveTowards(transform.position, target, step);
 
-        position = transform.position;
+            position = transform.position;
+        }
 
         /*if (position == target)
         {
@@ -40,6 +43,7 @@ public class Move : MonoBehaviour
         if (other.tag == "Gate")
         {
             Click.letThroughColours.Add(donut.GetComponent<Click>().id);
+            Click.letThroughGO.Add(donut);
             donut.SetActive(false);
             disabledMove++;
         }

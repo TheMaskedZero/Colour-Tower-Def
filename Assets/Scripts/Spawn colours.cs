@@ -6,7 +6,7 @@ using System.IO;
 public class Spawncolours : MonoBehaviour
 {
     [SerializeField] GameObject startScreen;
-    [SerializeField] GameObject endScreen;
+    [SerializeField] GameObject doneButton;
 
     [SerializeField] GameObject colourCircle;
     [SerializeField] GameObject borderDonut;
@@ -14,6 +14,11 @@ public class Spawncolours : MonoBehaviour
     [SerializeField] int totalDisabled;
     public Color colorConverted;
     private int i;
+
+    public static bool stage2 = false;
+
+    public Transform[] stage2Spots;
+    public bool[] availableSpots;
 
     public int spawnAmount;
 
@@ -108,13 +113,55 @@ public class Spawncolours : MonoBehaviour
         totalDisabled = Move.disabledMove + Click.disabledClick;
         if (spawnAmount == Move.disabledMove + Click.disabledClick)
         {
-            endScreen.SetActive(true);
-            CreateText();
-            Click.chosenColours.Clear();
-            Click.letThroughColours.Clear();
-            Click.allColours.Clear();
+            stage2 = true;
+            doneButton.SetActive(true);
+
+            GameObject.Find("Main Camera").transform.position = new Vector3(0, -11, -10);
+
             spawnAmount++;
         }
+
+        if (stage2)
+        {
+            for (int i = 0; i < Click.letThroughGO.Count; i++)
+            {
+                Stage2SpawnDots();
+            }
+        }
+    }
+
+    public void Stage2SpawnDots()
+    {
+        if (Click.letThroughGO.Count >= 1)
+        {
+            GameObject randGO = Click.letThroughGO[Random.Range(0, Click.letThroughGO.Count)];
+            for (int i = 0; i < availableSpots.Length; i++)
+            {
+                if (availableSpots[i] == true)
+                {
+                        randGO.gameObject.SetActive(true);
+                        randGO.transform.position = stage2Spots[i].position;
+                        availableSpots[i] = false;
+                        Click.letThroughGO.Remove(randGO);
+                        return;
+                }
+            }
+        }
+    }
+
+    public void DoneSorting()
+    {
+        GameObject.Find("Main Camera").transform.position = new Vector3(0, 0, -10);
+
+        stage2 = false;
+        doneButton.SetActive(false);
+
+        CreateText();
+        Click.chosenColours.Clear();
+        Click.letThroughColours.Clear();
+        Click.allColours.Clear();
+        Click.sortedColours.Clear();
+        Click.letThroughGO.Clear();
     }
 
     void CreateText()
@@ -141,6 +188,12 @@ public class Spawncolours : MonoBehaviour
             File.AppendAllText(path, "\n");
 
             foreach (var x in Click.letThroughColours)
+            {
+                string data = "Remaining: " + "(" + x[0] + ", " + x[1] + ") ";
+                File.AppendAllText(path, data);
+            }
+            
+            foreach (var x in Click.sortedColours)
             {
                 string data = "Remaining: " + "(" + x[0] + ", " + x[1] + ") ";
                 File.AppendAllText(path, data);

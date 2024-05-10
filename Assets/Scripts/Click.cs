@@ -9,7 +9,10 @@ public class Click : MonoBehaviour
     public Vector2 id;
     public static List<Vector2> allColours = new List<Vector2>();
     public static List<Vector2> chosenColours = new List<Vector2>();
+    public static List<Vector2> sortedColours = new List<Vector2>();
     public static List<Vector2> letThroughColours = new List<Vector2>();
+
+    public static List<GameObject> letThroughGO = new List<GameObject>();
 
     public static int disabledClick = 0;
 
@@ -20,8 +23,12 @@ public class Click : MonoBehaviour
         chosenColours.Add(point.GetComponent<Click>().id);
         //allColours.Remove(point.GetComponent<Click>().id);
 
-        GameObject arrow = Instantiate(arrows, new Vector2(Random.Range(9.6f, 9.6f), Random.Range(-4.5f, 4.5f)), Quaternion.Euler(0,0,90));
-        arrow.GetComponent<Arrow>().donutTarget = point;
+        if (Spawncolours.stage2 == false)
+        {
+            GameObject arrow = Instantiate(arrows, new Vector2(Random.Range(9.6f, 9.6f), Random.Range(-4.5f, 4.5f)), Quaternion.Euler(0, 0, 90));
+            arrow.GetComponent<Arrow>().donutTarget = point;
+        }
+        
         //point.SetActive(false);
         /*foreach (var i in chosenColours)
         {
