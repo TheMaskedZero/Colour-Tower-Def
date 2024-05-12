@@ -990,6 +990,7 @@ MonoBehaviour:
   colourCircle: {fileID: 4411277699824787162, guid: 02fb6fbb8d8b1c243ab1586e7e8e26f5, type: 3}
   borderDonut: {fileID: 6033105224634492850, guid: 02081dd9da8807a46bb9da6ce6ef7dce, type: 3}
   blackBox: {fileID: 1400761316}
+  spawnAmount: 36
   randomizePosition: {x: 0, y: 0}
   colorConverted: {r: 0, g: 0, b: 0, a: 0}
   stage2Spots:
@@ -1039,7 +1040,6 @@ MonoBehaviour:
   - {fileID: 15127301}
   - {fileID: 417610690}
   availableSpots: 010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101
-  spawnAmount: 36
 --- !u!4 &199709632
 Transform:
   m_ObjectHideFlags: 0

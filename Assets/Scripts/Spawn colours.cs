@@ -160,7 +160,7 @@ public class Spawncolours : MonoBehaviour
         GameObject.Find("Main Camera").transform.position = new Vector3(0, 0, -10);
 
         p = 0;
-
+        spawnAmount--;
         stage2 = false;
         selectedLevel = 0;
         doneButton.SetActive(false);
