@@ -5,7 +5,6 @@ using System.IO;
 
 public class Spawncolours : MonoBehaviour
 {
-    [SerializeField] GameObject startScreen;
     [SerializeField] GameObject doneButton;
 
     [SerializeField] GameObject colourCircle;
@@ -62,12 +61,6 @@ public class Spawncolours : MonoBehaviour
     };
 
     public Vector2 randomizePosition;
-
-    public void StartGame()
-    {
-        startScreen.SetActive(false);
-        Time.timeScale = 1f;
-    }
 
     // Start is called before the first frame update
     void Start()
