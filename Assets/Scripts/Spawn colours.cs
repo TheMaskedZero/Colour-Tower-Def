@@ -5,14 +5,18 @@ using System.IO;
 
 public class Spawncolours : MonoBehaviour
 {
+    [SerializeField] GameObject bannerRefColour1;
+    [SerializeField] GameObject bannerRefColour2;
+    [SerializeField] GameObject stageRefColour;
+
     [SerializeField] GameObject doneButton;
 
     [SerializeField] GameObject colourCircle;
     [SerializeField] GameObject borderDonut;
     [SerializeField] GameObject blackBox;
-    //[SerializeField] int totalDisabled;
+    public Vector2 randomizePosition;
     public Color colorConverted;
-    //private int i;
+    private int p;
 
     public static int selectedLevel;
 
@@ -62,8 +66,6 @@ public class Spawncolours : MonoBehaviour
     new Vector2(0.3929903811f,0.2295f),
     };
 
-    public Vector2 randomizePosition;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -95,34 +97,35 @@ public class Spawncolours : MonoBehaviour
 
     public void SpawnDots()
     {
-        for (int i = 0; i < spawnAmount; i++)
+        for (p = 0; p < spawnAmount; p++)
         {
             //var randomXY = Random.Range(0, (CIE1931xyCoordinates.Length - 1));
-            colorConverted = blackBox.GetComponent<ColourCoordinateConverter>().ConvertxyTosRGB(CIE1931xyCoordinates[i]);
-            if (i < spawnAmount - 24)
+            colorConverted = blackBox.GetComponent<ColourCoordinateConverter>().ConvertxyTosRGB(CIE1931xyCoordinates[p]);
+            
+            if (p < spawnAmount - 24)
             {
                 randomizePosition = new Vector2(Random.Range(-12f, -6f), Random.Range(4.3f, -4.3f));
             }
-            else if (i < spawnAmount - 12)
+            else if (p < spawnAmount - 12)
             {
                 randomizePosition = new Vector2(Random.Range(-22f, -16f), Random.Range(4.3f, -4.3f));
             }
-            else if (i <= spawnAmount)
+            else if (p <= spawnAmount)
             {
-                randomizePosition = new Vector2(Random.Range(-36f, -28f), Random.Range(4.3f, -4.3f));
+                randomizePosition = new Vector2(Random.Range(-32f, -26f), Random.Range(4.3f, -4.3f));
             }
 
             GameObject circle = Instantiate(colourCircle, new Vector2(randomizePosition[0], randomizePosition[1]), Quaternion.identity);
             GameObject donut = Instantiate(borderDonut, new Vector2(randomizePosition[0], randomizePosition[1]), Quaternion.identity);
 
-            colourCircle.GetComponent<SpriteRenderer>().sortingOrder = +i;
-            borderDonut.GetComponent<SpriteRenderer>().sortingOrder = +i + 1;
+            colourCircle.GetComponent<SpriteRenderer>().sortingOrder = +p;
+            borderDonut.GetComponent<SpriteRenderer>().sortingOrder = +p + 1;
 
             colourCircle.GetComponent<SpriteRenderer>().color = colorConverted;
 
             circle.transform.SetParent(donut.transform);
 
-            donut.GetComponent<Click>().id = CIE1931xyCoordinates[i];
+            donut.GetComponent<Click>().id = CIE1931xyCoordinates[p];
 
             Click.allColours.Add(donut.GetComponent<Click>().id);
         }
@@ -140,7 +143,7 @@ public class Spawncolours : MonoBehaviour
                         randGO.gameObject.SetActive(true);
                         randGO.transform.position = stage2Spots[i].position;
                         availableSpots[i] = false;
-                        Click.letThroughGO.Remove(randGO);
+                        //Click.letThroughGO.Remove(randGO);
                         return;
                 }
             }
@@ -151,10 +154,17 @@ public class Spawncolours : MonoBehaviour
     {
         GameObject.Find("Main Camera").transform.position = new Vector3(0, 0, -10);
 
+        p = 0;
+
         stage2 = false;
         selectedLevel = 0;
         doneButton.SetActive(false);
         UI.levelSelectScreen.SetActive(true);
+
+        foreach (var dot in Click.letThroughGO)
+        {
+            Destroy(dot);
+        }
 
         CreateText();
         Click.chosenColours.Clear();

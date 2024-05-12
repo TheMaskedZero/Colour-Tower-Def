@@ -33,4 +33,16 @@ public class UI : MonoBehaviour
         levelSelectScreen.SetActive(false);
         Spawncolours.selectedLevel = 1;
     }
+
+    public void Level2()
+    {
+        levelSelectScreen.SetActive(false);
+        Spawncolours.selectedLevel = 2;
+    }
+
+    public void Level3()
+    {
+        levelSelectScreen.SetActive(false);
+        Spawncolours.selectedLevel = 3;
+    }
 }
