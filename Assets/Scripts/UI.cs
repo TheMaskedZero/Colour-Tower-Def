@@ -7,12 +7,13 @@ public class UI : MonoBehaviour
     [SerializeField] GameObject startScreen;
     public GameObject tutorialScreen;
 
-    public GameObject levelSelect;
+    public GameObject levelScreen;
+    public static GameObject levelSelectScreen;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        levelSelectScreen = levelScreen;
     }
 
     // Update is called once per frame
@@ -24,13 +25,12 @@ public class UI : MonoBehaviour
     public void StartGame()
     {
         startScreen.SetActive(false);
-        levelSelect.SetActive(true);
+        levelSelectScreen.SetActive(true);
     }
 
     public void Level1()
     {
-        levelSelect.SetActive(false);
-
-        Time.timeScale = 1f;
+        levelSelectScreen.SetActive(false);
+        Spawncolours.selectedLevel = 1;
     }
 }

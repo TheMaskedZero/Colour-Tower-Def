@@ -10,9 +10,11 @@ public class Spawncolours : MonoBehaviour
     [SerializeField] GameObject colourCircle;
     [SerializeField] GameObject borderDonut;
     [SerializeField] GameObject blackBox;
-    [SerializeField] int totalDisabled;
+    //[SerializeField] int totalDisabled;
     public Color colorConverted;
-    private int i;
+    //private int i;
+
+    public static int selectedLevel;
 
     public static bool stage2 = false;
 
@@ -65,8 +67,34 @@ public class Spawncolours : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 0f;
 
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //totalDisabled = Move.disabledMove + Click.disabledClick;
+        if (spawnAmount == Move.disabledMove + Click.disabledClick)
+        {
+            stage2 = true;
+            doneButton.SetActive(true);
+
+            GameObject.Find("Main Camera").transform.position = new Vector3(0, -11, -10);
+
+            spawnAmount++;
+        }
+
+        if (stage2)
+        {
+            for (int i = 0; i < Click.letThroughGO.Count; i++)
+            {
+                Stage2SpawnDots();
+            }
+        }
+    }
+
+    public void SpawnDots()
+    {
         for (int i = 0; i < spawnAmount; i++)
         {
             //var randomXY = Random.Range(0, (CIE1931xyCoordinates.Length - 1));
@@ -100,29 +128,6 @@ public class Spawncolours : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        totalDisabled = Move.disabledMove + Click.disabledClick;
-        if (spawnAmount == Move.disabledMove + Click.disabledClick)
-        {
-            stage2 = true;
-            doneButton.SetActive(true);
-
-            GameObject.Find("Main Camera").transform.position = new Vector3(0, -11, -10);
-
-            spawnAmount++;
-        }
-
-        if (stage2)
-        {
-            for (int i = 0; i < Click.letThroughGO.Count; i++)
-            {
-                Stage2SpawnDots();
-            }
-        }
-    }
-
     public void Stage2SpawnDots()
     {
         if (Click.letThroughGO.Count >= 1)
@@ -147,7 +152,9 @@ public class Spawncolours : MonoBehaviour
         GameObject.Find("Main Camera").transform.position = new Vector3(0, 0, -10);
 
         stage2 = false;
+        selectedLevel = 0;
         doneButton.SetActive(false);
+        UI.levelSelectScreen.SetActive(true);
 
         CreateText();
         Click.chosenColours.Clear();
