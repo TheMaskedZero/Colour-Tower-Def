@@ -5,28 +5,31 @@ using System.IO;
 
 public class Spawncolours : MonoBehaviour
 {
+    //Ref colour stuff
     [SerializeField] GameObject bannerRefColour1;
     [SerializeField] GameObject bannerRefColour2;
     [SerializeField] GameObject stageRefColour;
 
     [SerializeField] GameObject doneButton;
 
+    //Spawning stuff
     [SerializeField] GameObject colourCircle;
     [SerializeField] GameObject borderDonut;
     [SerializeField] GameObject blackBox;
+    public int spawnAmount;
     public Vector2 randomizePosition;
     public Color colorConverted;
     private int p;
 
-    public static int selectedLevel;
-
+    //Stage 2 stuff
     public static bool stage2 = false;
 
     public Transform[] stage2Spots;
     public bool[] availableSpots;
     private List<GameObject> sortingGO = new List<GameObject>();
 
-    public int spawnAmount;
+    //Level value
+    public static int selectedLevel;
 
     Vector2[] CIE1931xyCoordinates = new Vector2[]{
     new Vector2(0.39f,0.237f),
