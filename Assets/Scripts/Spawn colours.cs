@@ -24,6 +24,7 @@ public class Spawncolours : MonoBehaviour
 
     public Transform[] stage2Spots;
     public bool[] availableSpots;
+    private List<GameObject> sortingGO = new List<GameObject>();
 
     public int spawnAmount;
 
@@ -140,11 +141,12 @@ public class Spawncolours : MonoBehaviour
             {
                 if (availableSpots[i] == true)
                 {
-                        randGO.gameObject.SetActive(true);
-                        randGO.transform.position = stage2Spots[i].position;
-                        availableSpots[i] = false;
-                        //Click.letThroughGO.Remove(randGO);
-                        return;
+                    randGO.gameObject.SetActive(true);
+                    randGO.transform.position = stage2Spots[i].position;
+                    availableSpots[i] = false;
+                    sortingGO.Add(randGO);
+                    Click.letThroughGO.Remove(randGO);
+                    return;
                 }
             }
         }
@@ -161,7 +163,7 @@ public class Spawncolours : MonoBehaviour
         doneButton.SetActive(false);
         UI.levelSelectScreen.SetActive(true);
 
-        foreach (var dot in Click.letThroughGO)
+        foreach (var dot in sortingGO)
         {
             Destroy(dot);
         }
