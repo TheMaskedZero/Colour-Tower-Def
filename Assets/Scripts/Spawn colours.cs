@@ -163,6 +163,8 @@ public class Spawncolours : MonoBehaviour
         spawnAmount--;
         stage2 = false;
         selectedLevel = 0;
+        Move.disabledMove = 0;
+        Click.disabledClick = 0;
         doneButton.SetActive(false);
         UI.levelSelectScreen.SetActive(true);
 
