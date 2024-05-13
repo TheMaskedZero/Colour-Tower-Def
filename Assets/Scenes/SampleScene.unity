@@ -758,7 +758,7 @@ GameObject:
   - component: {fileID: 170145321}
   m_Layer: 0
   m_Name: Wall Stage 2 (5)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3303,7 +3303,7 @@ GameObject:
   - component: {fileID: 709640095}
   m_Layer: 0
   m_Name: Wall Stage 2
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4633,7 +4633,7 @@ GameObject:
   - component: {fileID: 1242183035}
   m_Layer: 0
   m_Name: Wall Stage 2 (4)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5426,7 +5426,7 @@ GameObject:
   - component: {fileID: 1635217536}
   m_Layer: 0
   m_Name: Wall Stage 2 (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7126,7 +7126,7 @@ GameObject:
   - component: {fileID: 2068298534}
   m_Layer: 0
   m_Name: Wall Stage 2 (1)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

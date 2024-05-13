@@ -8,6 +8,7 @@ TagManager:
   - ColourDot
   - Gate
   - Stage2 Gate
+  - Wall
   layers:
   - Default
   - TransparentFX

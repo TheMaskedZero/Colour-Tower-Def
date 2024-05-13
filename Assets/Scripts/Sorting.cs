@@ -18,11 +18,13 @@ public class Sorting : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Collider2D targetObject = Physics2D.OverlapPoint(mousePosition);
-
-                if (targetObject)
+                if (targetObject.tag != "Wall")
                 {
-                    selectedObject = targetObject.transform.gameObject;
-                    offset = selectedObject.transform.position - mousePosition;
+                    if (targetObject)
+                    {
+                        selectedObject = targetObject.transform.gameObject;
+                        offset = selectedObject.transform.position - mousePosition;
+                    }
                 }
             }
 

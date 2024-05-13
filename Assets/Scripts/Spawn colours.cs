@@ -80,8 +80,9 @@ public class Spawncolours : MonoBehaviour
     void Update()
     {
         //totalDisabled = Move.disabledMove + Click.disabledClick;
-        if (spawnAmount == Move.disabledMove + Click.disabledClick)
+        if (Move.disabledMove + Click.disabledClick == spawnAmount)
         {
+            Debug.Log("if statement ran");
             stage2 = true;
             doneButton.SetActive(true);
 
@@ -92,6 +93,8 @@ public class Spawncolours : MonoBehaviour
 
         if (stage2)
         {
+            Move.disabledMove = 0;
+            Click.disabledClick = 0;
             for (int i = 0; i < Click.letThroughGO.Count; i++)
             {
                 Stage2SpawnDots();
@@ -157,22 +160,28 @@ public class Spawncolours : MonoBehaviour
 
     public void DoneSorting()
     {
-        GameObject.Find("Main Camera").transform.position = new Vector3(0, 0, -10);
+        Debug.Log("Done button pressed");
 
         p = 0;
-        spawnAmount--;
-        stage2 = false;
         selectedLevel = 0;
-        Move.disabledMove = 0;
-        Click.disabledClick = 0;
+        stage2 = false;
+        spawnAmount--;
+
         doneButton.SetActive(false);
         UI.levelSelectScreen.SetActive(true);
+        GameObject.Find("Main Camera").transform.position = new Vector3(0, 0, -10);
 
         foreach (var dot in sortingGO)
         {
             Destroy(dot);
         }
-
+        for (int i = 0; i < availableSpots.Length; i++)
+        {
+            if (availableSpots[i] == false)
+            {
+                availableSpots[i] = true;
+            }
+        }
         CreateText();
         Click.chosenColours.Clear();
         Click.letThroughColours.Clear();

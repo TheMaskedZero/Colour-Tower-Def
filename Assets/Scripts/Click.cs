@@ -52,8 +52,4 @@ public class Click : MonoBehaviour
     {
 
     }
-    private void OnDestroy()
-    {
-        disabledClick++;
-    }
 }

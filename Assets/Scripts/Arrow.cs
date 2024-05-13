@@ -31,6 +31,7 @@ public class Arrow : MonoBehaviour
             {
                 Destroy(donutTarget);
                 Destroy(arrow);
+                Click.disabledClick++;
             }
         }
     }
