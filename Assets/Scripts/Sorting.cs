@@ -6,8 +6,17 @@ public class Sorting : MonoBehaviour
 {
     [SerializeField] GameObject donut;
 
+    public static int spotIndex;
+    public Spawncolours SC;
+
     public GameObject selectedObject;
     Vector3 offset;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
 
     void Update()
     {
@@ -44,15 +53,14 @@ public class Sorting : MonoBehaviour
     {
         if (other.tag == "Stage2 Gate")
         {
-            Click.sortedColours.Add(donut.GetComponent<Click>().id);
+            /*if (Click.letThroughGO.Count >= 1)
+            {
+                SC.availableSpots[spotIndex] = true;
+                SC.Stage2SpawnDots();
+            }*/
+            Click.sortedColours.Add(Spawncolours.elapsedTime, donut.GetComponent<Click>().id);
             Click.letThroughColours.Remove(donut.GetComponent<Click>().id);
             Destroy(donut);
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 }

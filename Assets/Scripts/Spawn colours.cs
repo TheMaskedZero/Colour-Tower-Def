@@ -5,90 +5,67 @@ using System.IO;
 
 public class Spawncolours : MonoBehaviour
 {
-    //Ref colour stuff
-    [SerializeField] GameObject bannerRefColour1;
-    [SerializeField] GameObject bannerRefColour2;
-    [SerializeField] GameObject stageRefColour;
-
     [SerializeField] GameObject doneButton;
+    public static float elapsedTime;
+    public static bool timeStart = false;
 
     //Spawning stuff
     [SerializeField] GameObject colourCircle;
     [SerializeField] GameObject borderDonut;
     [SerializeField] GameObject blackBox;
-    public int spawnAmount;
     public Vector2 randomizePosition;
     public Color colorConverted;
     private int p;
 
+    private int spawned;
+    public static bool stage1 = false;
+    public static List<Vector2> CIE1931xyCoordinates = new List<Vector2>() { new Vector2(0f,0f)};
+    public List<Vector2> checkList;
+    public static int maxSpawn = 99;
+
     //Stage 2 stuff
     public static bool stage2 = false;
-
     public Transform[] stage2Spots;
     public bool[] availableSpots;
     private List<GameObject> sortingGO = new List<GameObject>();
 
+    private float stage2Start;
+
     //Level value
     public static int selectedLevel;
-
-    Vector2[] CIE1931xyCoordinates = new Vector2[]{
-    new Vector2(0.39f,0.237f),
-    new Vector2(0.388660254f,0.242f),
-    new Vector2(0.385f,0.245660254f),
-    new Vector2(0.38f,0.247f),
-    new Vector2(0.375f,0.245660254f),
-    new Vector2(0.371339746f,0.242f),
-    new Vector2(0.37f,0.237f),
-    new Vector2(0.371339746f,0.232f),
-    new Vector2(0.375f,0.228339746f),
-    new Vector2(0.38f,0.227f),
-    new Vector2(0.385f,0.228339746f),
-    new Vector2(0.388660254f,0.232f),
-    new Vector2(0.4f,0.237f),
-    new Vector2(0.3973205081f,0.247f),
-    new Vector2(0.39f,0.2543205081f),
-    new Vector2(0.38f,0.257f),
-    new Vector2(0.37f,0.2543205081f),
-    new Vector2(0.3626794919f,0.247f),
-    new Vector2(0.36f,0.237f),
-    new Vector2(0.3626794919f,0.227f),
-    new Vector2(0.37f,0.2196794919f),
-    new Vector2(0.38f,0.217f),
-    new Vector2(0.39f,0.2196794919f),
-    new Vector2(0.3973205081f,0.227f),
-    new Vector2(0.395f,0.237f),
-    new Vector2(0.3929903811f,0.2445f),
-    new Vector2(0.3875f,0.2499903811f),
-    new Vector2(0.38f,0.252f),
-    new Vector2(0.3725f,0.2499903811f),
-    new Vector2(0.3670096189f,0.2445f),
-    new Vector2(0.365f,0.237f),
-    new Vector2(0.3670096189f,0.2295f),
-    new Vector2(0.3725f,0.2240096189f),
-    new Vector2(0.38f,0.222f),
-    new Vector2(0.3875f,0.2240096189f),
-    new Vector2(0.3929903811f,0.2295f),
-    };
 
     // Start is called before the first frame update
     void Start()
     {
-
+        elapsedTime = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //totalDisabled = Move.disabledMove + Click.disabledClick;
-        if (Move.disabledMove + Click.disabledClick == spawnAmount)
+        if (timeStart)
         {
-            Debug.Log("if statement ran");
+            elapsedTime += Time.deltaTime;
+        }
+
+        checkList = CIE1931xyCoordinates;
+        if (stage1)
+        {
+            if (spawned - (Move.disabledMove + Click.disabledClick) < 7 && CIE1931xyCoordinates.Count != 0)
+            {
+                SpawnDots();
+                spawned++;
+            }
+        }
+        //totalDisabled = Move.disabledMove + Click.disabledClick;
+        if (Move.disabledMove + Click.disabledClick == maxSpawn && stage1)
+        {
+            stage1 = false;
             stage2 = true;
+            stage2Start = elapsedTime;
             doneButton.SetActive(true);
 
             GameObject.Find("Main Camera").transform.position = new Vector3(0, -11, -10);
-
-            spawnAmount++;
         }
 
         if (stage2)
@@ -104,38 +81,26 @@ public class Spawncolours : MonoBehaviour
 
     public void SpawnDots()
     {
-        for (p = 0; p < spawnAmount; p++)
-        {
-            //var randomXY = Random.Range(0, (CIE1931xyCoordinates.Length - 1));
-            colorConverted = blackBox.GetComponent<ColourCoordinateConverter>().ConvertxyTosRGB(CIE1931xyCoordinates[p]);
-            
-            if (p < spawnAmount - 24)
-            {
-                randomizePosition = new Vector2(Random.Range(-12f, -6f), Random.Range(4.3f, -4.3f));
-            }
-            else if (p < spawnAmount - 12)
-            {
-                randomizePosition = new Vector2(Random.Range(-22f, -16f), Random.Range(4.3f, -4.3f));
-            }
-            else if (p <= spawnAmount)
-            {
-                randomizePosition = new Vector2(Random.Range(-32f, -26f), Random.Range(4.3f, -4.3f));
-            }
+        //var randomXY = Random.Range(0, (CIE1931xyCoordinates.Length - 1));
+        Vector2 currentDot = CIE1931xyCoordinates[Random.Range(0, CIE1931xyCoordinates.Count)];
+        CIE1931xyCoordinates.Remove(currentDot);
+        colorConverted = blackBox.GetComponent<ConvertToP3>().Convert(currentDot);
 
-            GameObject circle = Instantiate(colourCircle, new Vector2(randomizePosition[0], randomizePosition[1]), Quaternion.identity);
-            GameObject donut = Instantiate(borderDonut, new Vector2(randomizePosition[0], randomizePosition[1]), Quaternion.identity);
+        randomizePosition = new Vector2(Random.Range(-12f, -8f), Random.Range(4.3f, -4.3f));
 
-            colourCircle.GetComponent<SpriteRenderer>().sortingOrder = +p;
-            borderDonut.GetComponent<SpriteRenderer>().sortingOrder = +p + 1;
+        GameObject circle = Instantiate(colourCircle, new Vector2(randomizePosition[0], randomizePosition[1]), Quaternion.identity);
+        GameObject donut = Instantiate(borderDonut, new Vector2(randomizePosition[0], randomizePosition[1]), Quaternion.identity);
 
-            colourCircle.GetComponent<SpriteRenderer>().color = colorConverted;
+        //colourCircle.GetComponent<SpriteRenderer>().sortingOrder = +p;
+        //borderDonut.GetComponent<SpriteRenderer>().sortingOrder = +p + 1;
 
-            circle.transform.SetParent(donut.transform);
+        circle.GetComponent<SpriteRenderer>().color = colorConverted;
 
-            donut.GetComponent<Click>().id = CIE1931xyCoordinates[p];
+        circle.transform.SetParent(donut.transform);
 
-            Click.allColours.Add(donut.GetComponent<Click>().id);
-        }
+        donut.GetComponent<Click>().id = currentDot;
+
+        //Click.allColours.Add(donut.GetComponent<Click>().id, elapsedTime);
     }
 
     public void Stage2SpawnDots()
@@ -162,10 +127,10 @@ public class Spawncolours : MonoBehaviour
     {
         Debug.Log("Done button pressed");
 
-        p = 0;
-        selectedLevel = 0;
         stage2 = false;
-        spawnAmount--;
+        spawned = 0;
+        timeStart = false;
+        elapsedTime = 0;
 
         doneButton.SetActive(false);
         UI.levelSelectScreen.SetActive(true);
@@ -185,45 +150,57 @@ public class Spawncolours : MonoBehaviour
         CreateText();
         Click.chosenColours.Clear();
         Click.letThroughColours.Clear();
-        Click.allColours.Clear();
+        //Click.allColours.Clear();
         Click.sortedColours.Clear();
         Click.letThroughGO.Clear();
     }
 
     void CreateText()
     {
-        string path = Application.persistentDataPath + "/Tower Defense Data log.txt";
+        string path = Application.persistentDataPath + "/Tower Defense Data log.csv";
 
         if (!File.Exists(path))
         {
-            File.WriteAllText(path, "log \n\n");
+            File.WriteAllText(path, "Level Time x y");
         }
 
         if (File.Exists(path))
         {
             File.AppendAllText(path, "\n");
-            File.AppendAllText(path, "\n");
+            File.AppendAllText(path, "Selected: \n");
+
+            string level = selectedLevel.ToString();
 
             foreach (var y in Click.chosenColours)
             {
-                string chosenData = "Chosen ID: " + "(" + y[0] + ", " + y[1] + ") ";
+                string chosenData = level + " " + y.Key + " " + y.Value[0] + " " + y.Value[1];
                 File.AppendAllText(path, chosenData);
-
+                File.AppendAllText(path, "\n");
             }
 
             File.AppendAllText(path, "\n");
+            File.AppendAllText(path, "Stage 2 start:" + stage2Start +"\n");
+            File.AppendAllText(path, "Sorted: \n");
+
+            foreach (var x in Click.sortedColours)
+            {
+                string sortedData = level + " " + x.Key + " " + x.Value[0] + " " + x.Value[1];
+                File.AppendAllText(path, sortedData);
+                File.AppendAllText(path, "\n");
+            }
+
+            File.AppendAllText(path, "\n");
+            File.AppendAllText(path, "Let through: \n");
 
             foreach (var x in Click.letThroughColours)
             {
-                string data = "Remaining: " + "(" + x[0] + ", " + x[1] + ") ";
-                File.AppendAllText(path, data);
+                string letThroughData = level + " " + x[0] + " " + x[1];
+                File.AppendAllText(path, letThroughData);
+                File.AppendAllText(path, "\n");
             }
-            
-            foreach (var x in Click.sortedColours)
-            {
-                string data = "Remaining: " + "(" + x[0] + ", " + x[1] + ") ";
-                File.AppendAllText(path, data);
-            }
+
+            File.AppendAllText(path, "\n");
+            File.AppendAllText(path, "\n");
         }
     }
 }

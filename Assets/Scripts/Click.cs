@@ -7,9 +7,9 @@ public class Click : MonoBehaviour
 
     [SerializeField] GameObject point;
     public Vector2 id;
-    public static List<Vector2> allColours = new List<Vector2>();
-    public static List<Vector2> chosenColours = new List<Vector2>();
-    public static List<Vector2> sortedColours = new List<Vector2>();
+    //public static Dictionary<Vector2, float> allColours = new Dictionary<Vector2, float>();
+    public static Dictionary<float, Vector2> chosenColours = new Dictionary<float, Vector2>();
+    public static Dictionary<float, Vector2> sortedColours = new Dictionary<float, Vector2>();
     public static List<Vector2> letThroughColours = new List<Vector2>();
 
     public static List<GameObject> letThroughGO = new List<GameObject>();
@@ -20,7 +20,11 @@ public class Click : MonoBehaviour
 
     private void OnMouseDown()
     {
-        chosenColours.Add(point.GetComponent<Click>().id);
+        //if (!chosenColours.ContainsKey(point.GetComponent<Click>().id))
+        //{
+        //}
+
+        chosenColours.Add(Spawncolours.elapsedTime, point.GetComponent<Click>().id);
         //allColours.Remove(point.GetComponent<Click>().id);
 
         if (Spawncolours.stage2 == false)
@@ -28,17 +32,6 @@ public class Click : MonoBehaviour
             GameObject arrow = Instantiate(arrows, new Vector2(Random.Range(9.6f, 9.6f), Random.Range(-4.5f, 4.5f)), Quaternion.Euler(0, 0, 90));
             arrow.GetComponent<Arrow>().donutTarget = point;
         }
-        
-        //point.SetActive(false);
-        /*foreach (var i in chosenColours)
-        {
-            Debug.Log(i[0] +", " + i[1]);
-        }
-        foreach (var u in allColours)
-        {
-            Debug.Log(u[0] + ", " + u[1]);
-
-        }*/
     }
 
     // Start is called before the first frame update
