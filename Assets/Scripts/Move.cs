@@ -15,7 +15,7 @@ public class Move : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Vector2 randomizePosition = new Vector2(6.0f, 0.0f);
+        Vector2 randomizePosition = new Vector2(8f, 2.0f);
         target = randomizePosition + new Vector2(Random.Range(0.0f, 0.0f), Random.Range(-1.0f, 1.0f));
     }
 

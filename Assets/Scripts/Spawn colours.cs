@@ -58,7 +58,7 @@ public class Spawncolours : MonoBehaviour
             }
         }
         //totalDisabled = Move.disabledMove + Click.disabledClick;
-        if (Move.disabledMove + Click.disabledClick == maxSpawn && stage1)
+        if (Move.disabledMove + Click.disabledClick == maxSpawn)
         {
             stage1 = false;
             stage2 = true;
@@ -86,7 +86,7 @@ public class Spawncolours : MonoBehaviour
         CIE1931xyCoordinates.Remove(currentDot);
         colorConverted = blackBox.GetComponent<ConvertToP3>().Convert(currentDot);
 
-        randomizePosition = new Vector2(Random.Range(-12f, -8f), Random.Range(4.3f, -4.3f));
+        randomizePosition = new Vector2(Random.Range(-13f, -11f), Random.Range(-1f, -5f));
 
         GameObject circle = Instantiate(colourCircle, new Vector2(randomizePosition[0], randomizePosition[1]), Quaternion.identity);
         GameObject donut = Instantiate(borderDonut, new Vector2(randomizePosition[0], randomizePosition[1]), Quaternion.identity);
