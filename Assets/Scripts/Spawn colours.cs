@@ -9,6 +9,8 @@ public class Spawncolours : MonoBehaviour
     public static float elapsedTime;
     public static bool timeStart = false;
 
+    public AudioSource win;
+
     //Spawning stuff
     [SerializeField] GameObject colourCircle;
     [SerializeField] GameObject borderDonut;
@@ -125,7 +127,7 @@ public class Spawncolours : MonoBehaviour
 
     public void DoneSorting()
     {
-        Debug.Log("Done button pressed");
+        win.Play();
 
         stage2 = false;
         spawned = 0;

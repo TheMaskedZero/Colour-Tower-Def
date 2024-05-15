@@ -7,10 +7,18 @@ public class Arrow : MonoBehaviour
     [SerializeField] GameObject arrow;
     [SerializeField] float speed;
     public GameObject donutTarget;
+
+    public GameObject audioManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioManager = GameObject.Find("AudioManager");
+    }
+
+    private void OnDestroy()
+    {
+        audioManager.GetComponent<Audiomanager>().PlayAudio();
     }
 
     // Update is called once per frame
