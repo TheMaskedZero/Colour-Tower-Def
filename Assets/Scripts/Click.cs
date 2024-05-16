@@ -8,7 +8,7 @@ public class Click : MonoBehaviour
     [SerializeField] GameObject point;
     public Vector2 id;
     //public static Dictionary<Vector2, float> allColours = new Dictionary<Vector2, float>();
-    public static Dictionary<float, Vector2> chosenColours = new Dictionary<float, Vector2>();
+    public static Dictionary<(float, Vector2), Vector2> chosenColours = new Dictionary<(float, Vector2), Vector2>();
     public static Dictionary<float, Vector2> sortedColours = new Dictionary<float, Vector2>();
     public static List<Vector2> letThroughColours = new List<Vector2>();
 
@@ -24,7 +24,7 @@ public class Click : MonoBehaviour
         //{
         //}
 
-        chosenColours.Add(Spawncolours.elapsedTime, point.GetComponent<Click>().id);
+        chosenColours.Add((Spawncolours.elapsedTime, point.transform.position), point.GetComponent<Click>().id);
         //allColours.Remove(point.GetComponent<Click>().id);
 
         if (Spawncolours.stage2 == false)

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using TMPro;
 
 public class Spawncolours : MonoBehaviour
 {
@@ -25,6 +26,10 @@ public class Spawncolours : MonoBehaviour
     public List<Vector2> checkList;
     public static int maxSpawn = 99;
 
+    public static GameObject showRemainingPanel;
+    public GameObject remainingPanel;
+    public TextMeshProUGUI remainingSpawns;
+
     //Stage 2 stuff
     public static bool stage2 = false;
     public Transform[] stage2Spots;
@@ -39,12 +44,15 @@ public class Spawncolours : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        showRemainingPanel = remainingPanel;
         elapsedTime = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        remainingSpawns.text = "Remaining: " + checkList.Count.ToString();
+
         if (timeStart)
         {
             elapsedTime += Time.deltaTime;
@@ -72,6 +80,8 @@ public class Spawncolours : MonoBehaviour
 
         if (stage2)
         {
+            showRemainingPanel.SetActive(false);
+
             Move.disabledMove = 0;
             Click.disabledClick = 0;
             for (int i = 0; i < Click.letThroughGO.Count; i++)
@@ -116,6 +126,7 @@ public class Spawncolours : MonoBehaviour
                 {
                     randGO.gameObject.SetActive(true);
                     randGO.transform.position = stage2Spots[i].position;
+                    randGO.GetComponent<Sorting>().transformIndex = stage2Spots[i];
                     availableSpots[i] = false;
                     sortingGO.Add(randGO);
                     Click.letThroughGO.Remove(randGO);
@@ -135,7 +146,7 @@ public class Spawncolours : MonoBehaviour
         elapsedTime = 0;
 
         doneButton.SetActive(false);
-        UI.levelSelectScreen.SetActive(true);
+        UI.showScoreScreen.SetActive(true);
         GameObject.Find("Main Camera").transform.position = new Vector3(0, 0, -10);
 
         foreach (var dot in sortingGO)
@@ -163,7 +174,7 @@ public class Spawncolours : MonoBehaviour
 
         if (!File.Exists(path))
         {
-            File.WriteAllText(path, "Level Time x y");
+            File.WriteAllText(path, "Level Time PositionX PositionY x y");
         }
 
         if (File.Exists(path))

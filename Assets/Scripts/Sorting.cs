@@ -7,7 +7,9 @@ public class Sorting : MonoBehaviour
     [SerializeField] GameObject donut;
 
     public static int spotIndex;
-    public Spawncolours SC;
+    GameObject SC;
+
+    public Transform transformIndex;
 
     public GameObject selectedObject;
     Vector3 offset;
@@ -15,7 +17,7 @@ public class Sorting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        SC = GameObject.Find("Manager");
     }
 
     void Update()
@@ -27,7 +29,7 @@ public class Sorting : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Collider2D targetObject = Physics2D.OverlapPoint(mousePosition);
-                if (targetObject.tag != "Wall")
+                if (targetObject.tag != "Wall" && targetObject.tag != "Stage2 Gate")
                 {
                     if (targetObject)
                     {
@@ -53,11 +55,13 @@ public class Sorting : MonoBehaviour
     {
         if (other.tag == "Stage2 Gate")
         {
-            /*if (Click.letThroughGO.Count >= 1)
+            if (Click.letThroughGO.Count >= 1)
             {
-                SC.availableSpots[spotIndex] = true;
-                SC.Stage2SpawnDots();
-            }*/
+                int index = System.Array.IndexOf(SC.GetComponent<Spawncolours>().stage2Spots, transformIndex);
+                SC.GetComponent<Spawncolours>().availableSpots[index] = true;
+                //SC.availableSpots[spotIndex] = true;
+                SC.GetComponent<Spawncolours>().Stage2SpawnDots();
+            }
             Click.sortedColours.Add(Spawncolours.elapsedTime, donut.GetComponent<Click>().id);
             Click.letThroughColours.Remove(donut.GetComponent<Click>().id);
             Destroy(donut);

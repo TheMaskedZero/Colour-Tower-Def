@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   donut: {fileID: 5980358477991482487}
-  SC: {fileID: 0}
+  transformIndex: {fileID: 0}
   selectedObject: {fileID: 0}
 --- !u!61 &-5928251528649734597
 BoxCollider2D:
